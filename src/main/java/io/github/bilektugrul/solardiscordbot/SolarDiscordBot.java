@@ -3,21 +3,18 @@ package io.github.bilektugrul.solardiscordbot;
 import io.github.bilektugrul.solardiscordbot.bans.BanCheckThread;
 import io.github.bilektugrul.solardiscordbot.bans.BanManager;
 import io.github.bilektugrul.solardiscordbot.commands.DiscordCommands;
-import io.github.bilektugrul.solardiscordbot.commands.ReloadCommand;
-import io.github.bilektugrul.solardiscordbot.commands.linking.DiscordLinkCommand;
-import io.github.bilektugrul.solardiscordbot.commands.moderation.BanCommand;
-import io.github.bilektugrul.solardiscordbot.commands.moderation.KickCommand;
-import io.github.bilektugrul.solardiscordbot.commands.moderation.MuteCommand;
+import io.github.bilektugrul.solardiscordbot.commands.minecraft.ReloadCommand;
+import io.github.bilektugrul.solardiscordbot.commands.discord.linking.DiscordLinkCommand;
+import io.github.bilektugrul.solardiscordbot.commands.discord.moderation.BanCommand;
+import io.github.bilektugrul.solardiscordbot.commands.discord.moderation.KickCommand;
+import io.github.bilektugrul.solardiscordbot.commands.discord.moderation.MuteCommand;
 import io.github.bilektugrul.solardiscordbot.customcmd.CmdManager;
 import io.github.bilektugrul.solardiscordbot.linking.DiscordLinkManager;
 import io.github.bilektugrul.solardiscordbot.listener.BukkitListener;
 import io.github.bilektugrul.solardiscordbot.listener.DiscordMessageListener;
 import io.github.bilektugrul.solardiscordbot.listener.LuckPermsListener;
 import io.github.bilektugrul.solardiscordbot.polls.PollTracker;
-import io.github.bilektugrul.solardiscordbot.polls.commands.NormalPollCommand;
-import io.github.bilektugrul.solardiscordbot.polls.commands.PollEndCommand;
-import io.github.bilektugrul.solardiscordbot.polls.commands.StrawPollCommand;
-import io.github.bilektugrul.solardiscordbot.polls.commands.ThreadPollCommand;
+import io.github.bilektugrul.solardiscordbot.commands.discord.PollCommand;
 import io.github.bilektugrul.solardiscordbot.users.UserManager;
 import io.github.bilektugrul.solardiscordbot.util.Utils;
 import me.clip.placeholderapi.PlaceholderAPI;
@@ -25,7 +22,6 @@ import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Activity;
-import net.dv8tion.jda.api.interactions.commands.Command;
 import net.dv8tion.jda.api.interactions.commands.DefaultMemberPermissions;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
@@ -104,6 +100,28 @@ public final class SolarDiscordBot extends JavaPlugin {
                         GatewayIntent.GUILD_MESSAGES)
                 .build();
 
+        SubcommandData normalPoll = new SubcommandData("normal", "Create a poll with yes and no options")
+                .addOption(OptionType.STRING, "question", "Question for the poll", true)
+                .addOption(OptionType.ATTACHMENT, "image", "Set an image or video to be displayed with the poll");
+        SubcommandData threadPoll = new SubcommandData("thread", "Create a poll with discussion thread")
+                .addOption(OptionType.STRING, "question", "Question for the poll", true)
+                .addOption(OptionType.ATTACHMENT, "image", "Set an image or video to be displayed with the poll");
+        SubcommandData strawPoll = new SubcommandData("straw", "Create a strawpoll")
+                .addOption(OptionType.STRING, "question", "Question for the poll", true)
+                .addOption(OptionType.STRING, "option-1", "An option", true)
+                .addOption(OptionType.STRING, "option-2", "An option", true)
+                .addOption(OptionType.STRING, "option-3", "An option")
+                .addOption(OptionType.STRING, "option-4", "An option")
+                .addOption(OptionType.STRING, "option-5", "An option")
+                .addOption(OptionType.STRING, "option-6", "An option")
+                .addOption(OptionType.STRING, "option-7", "An option")
+                .addOption(OptionType.STRING, "option-8", "An option")
+                .addOption(OptionType.STRING, "option-9", "An option")
+                .addOption(OptionType.STRING, "option-10", "An option")
+                .addOption(OptionType.ATTACHMENT, "image", "Set an image or video to be displayed with the poll");
+        SubcommandData endPoll = new SubcommandData("end", "End a poll")
+                .addOption(OptionType.STRING, "message-id", "Poll message ID", true);
+
         List<CommandData> commandDatas = new ArrayList<>(Arrays.asList(Commands.slash("broadcast", "Broadcast a message in the server")
                         .setDefaultPermissions(DefaultMemberPermissions.enabledFor(Permission.MANAGE_SERVER))
                         .setGuildOnly(true)
@@ -118,36 +136,7 @@ public final class SolarDiscordBot extends JavaPlugin {
                         .addOption(OptionType.STRING, "player", "The player whose stats you want to see", true),
                 Commands.slash("poll", "Create a poll")
                         .setGuildOnly(true)
-                        .addSubcommands(new SubcommandData("normal", "Create a poll with yes and no options")
-                                .addOption(OptionType.STRING, "question", "Question for the poll", true)
-                                .addOption(OptionType.ATTACHMENT, "image", "Set an image or video to be displayed with the poll"))
-                        .addOption(OptionType.STRING, "question", "Question for the poll", true)
-                        .addOption(OptionType.ATTACHMENT, "image", "Set an image or video to be displayed with the poll"),
-                Commands.slash("normalpoll", "Create a poll with yes and no options")
-                        .setGuildOnly(true)
-                        .addOption(OptionType.STRING, "question", "Question for the poll", true)
-                        .addOption(OptionType.ATTACHMENT, "image", "Set an image or video to be displayed with the poll"),
-                Commands.slash("threadpoll", "Create a poll with discussion thread")
-                        .setGuildOnly(true)
-                        .addOption(OptionType.STRING, "question", "Question for the poll", true)
-                        .addOption(OptionType.ATTACHMENT, "image", "Set an image or video to be displayed with the poll"),
-                Commands.slash("pollend", "End a poll")
-                        .setGuildOnly(true)
-                        .addOption(OptionType.STRING, "message-id", "Poll message ID", true),
-                Commands.slash("strawpoll", "Create a strawpoll")
-                        .setGuildOnly(true)
-                        .addOption(OptionType.STRING, "question", "Question for the poll", true)
-                        .addOption(OptionType.STRING, "option-1", "An option", true)
-                        .addOption(OptionType.STRING, "option-2", "An option", true)
-                        .addOption(OptionType.STRING, "option-3", "An option")
-                        .addOption(OptionType.STRING, "option-4", "An option")
-                        .addOption(OptionType.STRING, "option-5", "An option")
-                        .addOption(OptionType.STRING, "option-6", "An option")
-                        .addOption(OptionType.STRING, "option-7", "An option")
-                        .addOption(OptionType.STRING, "option-8", "An option")
-                        .addOption(OptionType.STRING, "option-9", "An option")
-                        .addOption(OptionType.STRING, "option-10", "An option")
-                        .addOption(OptionType.ATTACHMENT, "image", "Set an image or video to be displayed with the poll"),
+                        .addSubcommands(normalPoll, threadPoll, strawPoll, endPoll),
                 Commands.slash("ban", "Ban command")
                         .addOption(OptionType.USER, "user", "User that will be banned", true)
                         .addOption(OptionType.STRING, "timespan", "Ban duration", false)
@@ -170,10 +159,7 @@ public final class SolarDiscordBot extends JavaPlugin {
                     new BanCommand(this),
                     new MuteCommand(this),
                     new KickCommand(this),
-                    new NormalPollCommand(this),
-                    new StrawPollCommand(this),
-                    new ThreadPollCommand(this),
-                    new PollEndCommand(this));
+                    new PollCommand(this));
         }, 60);
 
         if (!Utils.getString("presence").isEmpty()) {

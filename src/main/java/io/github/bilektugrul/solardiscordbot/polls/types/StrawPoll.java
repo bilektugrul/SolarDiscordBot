@@ -1,8 +1,8 @@
 package io.github.bilektugrul.solardiscordbot.polls.types;
 
+import io.github.bilektugrul.solardiscordbot.commands.discord.PollCommand;
 import io.github.bilektugrul.solardiscordbot.polls.Poll;
 import io.github.bilektugrul.solardiscordbot.polls.PollOption;
-import io.github.bilektugrul.solardiscordbot.polls.commands.StrawPollCommand;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
@@ -69,7 +69,7 @@ public class StrawPoll implements Poll {
 
         option.addVoter(id);
 
-        MessageEditData data = MessageEditData.fromEmbeds(StrawPollCommand.strawPollEmbed(this).build());
+        MessageEditData data = MessageEditData.fromEmbeds(PollCommand.strawPollEmbed(this).build());
         if (changed) {
             event.reply("Your vote was changed.").setEphemeral(true).queue();
         } else {

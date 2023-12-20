@@ -1,8 +1,7 @@
-package io.github.bilektugrul.solardiscordbot.commands.moderation;
+package io.github.bilektugrul.solardiscordbot.commands.discord.moderation;
 
 import io.github.bilektugrul.solardiscordbot.SolarDiscordBot;
 import io.github.bilektugrul.solardiscordbot.bans.BanManager;
-import io.github.bilektugrul.solardiscordbot.util.Utils;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;

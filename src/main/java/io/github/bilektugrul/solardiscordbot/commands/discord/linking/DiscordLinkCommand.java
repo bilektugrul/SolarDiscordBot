@@ -1,4 +1,4 @@
-package io.github.bilektugrul.solardiscordbot.commands.linking;
+package io.github.bilektugrul.solardiscordbot.commands.discord.linking;
 
 import io.github.bilektugrul.solardiscordbot.SolarDiscordBot;
 import io.github.bilektugrul.solardiscordbot.linking.DiscordLinkManager;

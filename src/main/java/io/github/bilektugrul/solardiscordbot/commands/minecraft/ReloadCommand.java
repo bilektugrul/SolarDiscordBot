@@ -1,4 +1,4 @@
-package io.github.bilektugrul.solardiscordbot.commands;
+package io.github.bilektugrul.solardiscordbot.commands.minecraft;
 
 import io.github.bilektugrul.solardiscordbot.SolarDiscordBot;
 import org.bukkit.command.Command;

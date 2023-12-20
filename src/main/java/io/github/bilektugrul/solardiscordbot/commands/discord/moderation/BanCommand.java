@@ -1,4 +1,4 @@
-package io.github.bilektugrul.solardiscordbot.commands.moderation;
+package io.github.bilektugrul.solardiscordbot.commands.discord.moderation;
 
 import io.github.bilektugrul.solardiscordbot.SolarDiscordBot;
 import io.github.bilektugrul.solardiscordbot.bans.BanManager;
