@@ -1,0 +1,21 @@
+data:
+  name: 'server'
+  command-description: 'Sends info about server'
+  color: '#42bff5'
+  title: 'AitoFactions - Server Info'
+  thumbnail: ''
+  description: ''
+  footer: ''
+  footer-icon: ''
+  sent-message: 'Info sent!'
+
+  fields:
+    1:
+      name: Our web site
+      value: 'aitofactions.com'
+    2:
+      name: IP Address
+      value: 'play.aitofactions.com'
+    3:
+      name: Online player count
+      value: '%server_online%'

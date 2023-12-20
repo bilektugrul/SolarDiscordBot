@@ -1,0 +1,14 @@
+name: SolarDiscordBot
+version: '${project.version}'
+main: io.github.bilektugrul.solardiscordbot.SolarDiscordBot
+api-version: 1.13
+author: bilektugrul
+depend:
+  - LuckPerms
+softdepend:
+  - PlaceholderAPI
+commands:
+  dcbot:
+    aliases: [discordbot, solardcbot]
+  discord:
+    aliases: [dc]

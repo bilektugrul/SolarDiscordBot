@@ -1,0 +1,70 @@
+token: ""
+presence: '%server_online% players are online'
+presence-type: playing
+
+broadcast-prefix: '&8[&bAnnouncement&8]&r '
+
+stats-command:
+  color: '#42bff5'
+  title: 'Stats of **``%player_name%``**'
+  thumbnail: 'https://cravatar.eu/avatar/%player_name%/64.png'
+  description: ''
+  footer: ''
+  footer-icon: ''
+
+  fields:
+    1:
+      name: Kills
+      value: '%someplaceholder%'
+    2:
+      name: Deaths
+      value: '%someplaceholder%'
+    3:
+      name: KDR
+      value: '%someplaceholder%'
+
+discord-guild-id: 559339263452250123
+discord-link-channel-id: 1185985414704680970
+
+rank-sync:
+  vip:
+    discord-role-id: 725302903685775380
+  vip+:
+    discord-role-id: 725302903685775380
+  mvip:
+    discord-role-id: 725302903685775380
+  mvip+:
+    discord-role-id: 725302903685775380
+
+messages:
+  command-message:
+    - ''
+    - '&7Our discord address: &bhttps://discord.gg/4AQuXDGC6t'
+    - ''
+    - '&b/discord link'
+    - '&b/discord unlink'
+    - '&b/discord info'
+  code-created:
+    - '&7Your linking code: &b%code%'
+    - ''
+    - '&7Click on it for copying it easily.'
+    - '&7Send the code to our linking channel for completing the process.'
+    - '&7You have to be online whilst sending the code.'
+    - '&7The code will be cancelled after 5 minutes if you do not use it.'
+  code-already-created:
+    - '&7Your linking code: &b%code%'
+    - ''
+    - '&7Click on it for copying it easily.'
+    - '&7Send the code to our linking channel for completing the process.'
+  already-linked:
+    - '&cYour discord account is already linked.'
+  not-linked:
+    - '&cYou do not have a discord account linked to your character.'
+  linked:
+    - '&7Your character has been linked with the discord account &b%account%&7.'
+  linked-discord:
+    - '%member% your discord account has been linked with %name%.'
+  unlinked:
+    - '&7Your discord account link has been removed. You can relink again.'
+  info:
+    - '&7Your discord account: &b%account%'
