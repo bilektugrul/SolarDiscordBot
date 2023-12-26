@@ -57,7 +57,7 @@ public class PollCommand extends ListenerAdapter {
             if (subCommandName.equalsIgnoreCase("normal")) {
 
                 NormalPoll poll = new NormalPoll(jda, question,
-                        event.getGuild().getIdLong(), event.getChannel().getIdLong(), -1, event.getMember().getIdLong(),
+                        event.getGuild().getIdLong(), event.getChannel().getIdLong(), -1L, event.getMember().getIdLong(),
                         Lists.newArrayList(), Lists.newArrayList());
                 EmbedBuilder embed = normalPollEmbed(poll);
                 event.deferReply().queue();
@@ -74,7 +74,7 @@ public class PollCommand extends ListenerAdapter {
                         });
             } else if (subCommandName.equalsIgnoreCase("thread")) {
                 ThreadPoll poll = new ThreadPoll(jda, question,
-                        event.getGuild().getIdLong(), event.getChannel().getIdLong(), -1, event.getMember().getIdLong(), -1);
+                        event.getGuild().getIdLong(), event.getChannel().getIdLong(), -1L, event.getMember().getIdLong(), -1);
 
                 event.deferReply().queue();
                 EmbedBuilder embed = threadPollEmbed(poll);
@@ -91,7 +91,7 @@ public class PollCommand extends ListenerAdapter {
                         });
             } else if (subCommandName.equalsIgnoreCase("straw")) {
                 StrawPoll poll = new StrawPoll(jda, question,
-                        event.getGuild().getIdLong(), event.getChannel().getIdLong(), -1, event.getMember().getIdLong(), Lists.newArrayList());
+                        event.getGuild().getIdLong(), event.getChannel().getIdLong(), -1L, event.getMember().getIdLong(), Lists.newArrayList());
 
                 StringSelectMenu.Builder builder = StringSelectMenu.create("choose-option");
                 List<PollOption> optionList = Lists.newArrayList();

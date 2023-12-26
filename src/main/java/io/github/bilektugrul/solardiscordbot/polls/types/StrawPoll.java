@@ -38,7 +38,7 @@ public class StrawPoll implements Poll {
         this.author = guild.getMemberById(authorID);
         this.options = options;
 
-        if (pollMessageID != -1) {
+        if (pollMessageID != -1L) {
             try {
                 this.message = channel.retrieveMessageById(pollMessageID).complete();
             } catch (Exception e) {

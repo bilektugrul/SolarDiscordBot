@@ -36,12 +36,14 @@ public class NormalPoll implements Poll {
         this.yesVotes = yesVotes;
         this.noVotes = noVotes;
 
-        try {
-            this.message = channel.retrieveMessageById(pollMessageID).complete();
-        } catch (Exception e) {
-            Logger.getLogger("SolarDiscordBot").warning("The poll message " + pollMessageID + " could not be found.");
-            broken = true;
-            return;
+        if (pollMessageID != -1L) {
+            try {
+                this.message = channel.retrieveMessageById(pollMessageID).complete();
+            } catch (Exception e) {
+                Logger.getLogger("SolarDiscordBot").warning("The poll message " + pollMessageID + " could not be found.");
+                broken = true;
+                return;
+            }
         }
 
         this.broken = false;
