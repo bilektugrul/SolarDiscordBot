@@ -5,6 +5,7 @@ import io.github.bilektugrul.solardiscordbot.SolarDiscordBot;
 import io.github.bilektugrul.solardiscordbot.users.User;
 import io.github.bilektugrul.solardiscordbot.users.UserManager;
 import io.github.bilektugrul.solardiscordbot.util.Utils;
+import me.despical.commons.number.NumberUtils;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
@@ -13,8 +14,10 @@ import net.luckperms.api.LuckPermsProvider;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -94,15 +97,58 @@ public class DiscordLinkManager {
         player.sendMessage(Utils.getMessage("messages.unlinked", player));
     }
 
-    public void sendInfo(Player player) {
-        User mcUser = userManager.getUser(player);
-        if (mcUser.getDiscordID() == -1) {
-            player.sendMessage(Utils.getMessage("messages.not-linked", player));
+    public void sendInfo(Player player, String infoPlayer) {
+        User mcUser;
+        boolean discordID = false;
+
+        if (NumberUtils.isLong(infoPlayer)) {
+            discordID = true;
+            mcUser = findOwnerOfDiscordID(Long.parseLong(infoPlayer));
+        } else if (!userManager.isLoaded(infoPlayer)) {
+            mcUser = userManager.loadUser(infoPlayer, false);
+        } else {
+            mcUser = userManager.getUser(infoPlayer);
+        }
+
+        if (discordID && mcUser == null) {
+            player.sendMessage(Utils.getMessage("messages.not-present", player));
             return;
         }
 
-        String message = Utils.getMessage("messages.info", player);
-        player.sendMessage(message.replace("%account%", plugin.getBot().getUserById(mcUser.getDiscordID()).getName()));
+        if (mcUser.getDiscordID() == -1) {
+            if (infoPlayer.equals(player.getName())) {
+                player.sendMessage(Utils.getMessage("messages.not-linked", player));
+            } else {
+                player.sendMessage(Utils.getMessage("messages.not-linked-other", player));
+            }
+            return;
+        }
+
+        String message;
+        if (discordID) {
+            message = Utils.getMessage("messages.info-player-other", player);
+        } else {
+            message = infoPlayer.equals(player.getName())
+                    ? Utils.getMessage("messages.info", player)
+                    : Utils.getMessage("messages.info-other", player);
+        }
+
+        player.sendMessage(message.replace("%account%", discordID ? mcUser.getName() : plugin.getBot().getUserById(mcUser.getDiscordID()).getName()));
+    }
+
+    public User findOwnerOfDiscordID(long discordID) {
+        File[] allUsers = new File(plugin.getDataFolder() + "/players/").listFiles();
+
+        if (allUsers == null) return null;
+
+        for (File file : allUsers) {
+            YamlConfiguration yaml = YamlConfiguration.loadConfiguration(file);
+            if (yaml.getLong("discordID") == discordID) {
+                return new User(yaml, yaml.getString("lastKnownName"));
+            }
+        }
+
+        return null;
     }
 
     public void giveRole(Player player) {
@@ -162,6 +208,26 @@ public class DiscordLinkManager {
 
     public boolean isLinking(Player player) {
         return codes.containsKey(player);
+    }
+
+    public class LinkInfo {
+
+        private final String mcName;
+        private final long discordID;
+
+        public LinkInfo(String mcName, long discordID) {
+            this.mcName = mcName;
+            this.discordID = discordID;
+        }
+
+        public String getMcName() {
+            return mcName;
+        }
+
+        public long getDiscordID() {
+            return discordID;
+        }
+
     }
 
 }

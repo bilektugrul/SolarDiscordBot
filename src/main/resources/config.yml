@@ -60,6 +60,8 @@ messages:
     - '&cYour discord account is already linked.'
   not-linked:
     - '&cYou do not have a discord account linked to your character.'
+  not-linked-other:
+    - '&cThat player does not have a discord account linked to their character.'
   linked:
     - '&7Your character has been linked with the discord account &b%account%&7.'
   linked-discord:
@@ -68,3 +70,9 @@ messages:
     - '&7Your discord account link has been removed. You can relink again.'
   info:
     - '&7Your discord account: &b%account%'
+  info-other:
+    - '&7Their discord account: &b%account%'
+  info-player-other:
+    - '&7Their minecraft account: &b%account%'
+  not-present:
+    - '&cThat Discord ID has not linked their Minecraft account.'

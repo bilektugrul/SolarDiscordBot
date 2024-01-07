@@ -1,4 +1,4 @@
-package io.github.bilektugrul.solardiscordbot.commands;
+package io.github.bilektugrul.solardiscordbot.commands.discord;
 
 import io.github.bilektugrul.solardiscordbot.SolarDiscordBot;
 import io.github.bilektugrul.solardiscordbot.customcmd.CmdManager;
@@ -83,6 +83,16 @@ public class DiscordCommands extends ListenerAdapter {
 
             event.getHook().editOriginal("Stats sent!").queue();
             event.getHook().retrieveOriginal().queue(m -> m.replyEmbeds(embed).queue());
+        } else if (name.equals("linkinfo")) {
+            if (!event.getMember().hasPermission(Permission.MODERATE_MEMBERS)) {
+                event.reply("You can not use this command.").setEphemeral(true).queue();
+                return;
+            }
+
+            String player = event.getOption("player", OptionMapping::getAsString);
+
+            event.deferReply().queue();
+
         } else {
             Command cmd = cmdManager.getCmd(name);
             if (cmd == null) return;

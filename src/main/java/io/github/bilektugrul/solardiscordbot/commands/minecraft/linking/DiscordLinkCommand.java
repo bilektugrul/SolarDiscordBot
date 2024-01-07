@@ -1,4 +1,4 @@
-package io.github.bilektugrul.solardiscordbot.commands.discord.linking;
+package io.github.bilektugrul.solardiscordbot.commands.minecraft.linking;
 
 import io.github.bilektugrul.solardiscordbot.SolarDiscordBot;
 import io.github.bilektugrul.solardiscordbot.linking.DiscordLinkManager;
@@ -35,8 +35,19 @@ public class DiscordLinkCommand implements CommandExecutor {
         } else if (args[0].equalsIgnoreCase("unlink")) {
             discordLinkManager.unlink(player);
         } else if (args[0].equalsIgnoreCase("info")) {
-            discordLinkManager.sendInfo(player);
+            if (args.length == 1) {
+                discordLinkManager.sendInfo(player, player.getName());
+                return true;
+            }
+
+            if (!player.hasPermission("solarbot.infoothers")) {
+                return true;
+            }
+
+            String otherName = args[1];
+            discordLinkManager.sendInfo(player, otherName);
         }
+
         return true;
     }
 

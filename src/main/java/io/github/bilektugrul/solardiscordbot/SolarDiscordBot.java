@@ -2,9 +2,9 @@ package io.github.bilektugrul.solardiscordbot;
 
 import io.github.bilektugrul.solardiscordbot.bans.BanCheckThread;
 import io.github.bilektugrul.solardiscordbot.bans.BanManager;
-import io.github.bilektugrul.solardiscordbot.commands.DiscordCommands;
+import io.github.bilektugrul.solardiscordbot.commands.discord.DiscordCommands;
 import io.github.bilektugrul.solardiscordbot.commands.minecraft.ReloadCommand;
-import io.github.bilektugrul.solardiscordbot.commands.discord.linking.DiscordLinkCommand;
+import io.github.bilektugrul.solardiscordbot.commands.minecraft.linking.DiscordLinkCommand;
 import io.github.bilektugrul.solardiscordbot.commands.discord.moderation.BanCommand;
 import io.github.bilektugrul.solardiscordbot.commands.discord.moderation.KickCommand;
 import io.github.bilektugrul.solardiscordbot.commands.discord.moderation.MuteCommand;
@@ -147,7 +147,9 @@ public final class SolarDiscordBot extends JavaPlugin {
                         .addOption(OptionType.STRING, "reason", "The timeout reason", false),
                 Commands.slash("kick", "Mute command")
                         .addOption(OptionType.USER, "user", "User that will be kicked", true)
-                        .addOption(OptionType.STRING, "reason", "The kick reason", false)));
+                        .addOption(OptionType.STRING, "reason", "The kick reason", false),
+                Commands.slash("linkinfo", "See the Minecraft account or Discord account of a player")
+                        .addOption(OptionType.STRING, "player", "The player you want to see the info of", true)));
 
         this.cmdManager.getCmds().forEach(cmd -> commandDatas.add(Commands.slash(cmd.getName(), cmd.getCommandDescription()).setGuildOnly(true)));
         this.bot.updateCommands().addCommands(commandDatas).queue();

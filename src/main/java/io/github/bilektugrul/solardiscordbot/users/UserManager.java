@@ -8,7 +8,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.UUID;
 
 public class UserManager {
 
@@ -20,28 +19,33 @@ public class UserManager {
     }
 
     public User loadUser(Player p) {
-        return loadUser(p.getUniqueId(), p.getName(), true);
+        return loadUser(p.getName(), true);
     }
 
-    public User loadUser(UUID uuid, String name, boolean keep) {
-        YamlConfiguration dataFile = YamlConfiguration.loadConfiguration(new File(plugin.getDataFolder() + "/players/" + uuid + ".yml"));
-        User user = new User(dataFile, uuid, name);
+    public User loadUser(String name, boolean keep) {
+        YamlConfiguration dataFile = YamlConfiguration.loadConfiguration(new File(plugin.getDataFolder() + "/players/" + name + ".yml"));
+        User user = new User(dataFile, name);
         if (keep) userList.add(user);
         return user;
     }
 
     public User getUser(Player p) {
-        UUID uuid = p.getUniqueId();
-        return getUser(uuid);
+        String name = p.getName();
+        return getUser(name);
     }
 
-    public User getUser(UUID uuid) {
+    public User getUser(String name) {
         for (User user : userList) {
-            if (user.getUUID().equals(uuid)) {
+            if (user.getName().equalsIgnoreCase(name)) {
                 return user;
             }
         }
+
         return null;
+    }
+
+    public boolean isLoaded(String name) {
+        return getUser(name) != null;
     }
 
     public void removeUser(User user) {
