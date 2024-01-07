@@ -2,6 +2,8 @@ package io.github.bilektugrul.solardiscordbot.util;
 
 
 import io.github.bilektugrul.solardiscordbot.SolarDiscordBot;
+import io.github.bilektugrul.solardiscordbot.linking.DiscordLinkManager;
+import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -93,4 +95,24 @@ public class Utils {
         return dateFormat.format(date);
     }
 
+    public static void sendInfo(String arg, Player player, TextChannel channel, DiscordLinkManager.LinkInfo info) {
+        if (info == null) {
+            if (channel == null) {
+                player.sendMessage(getMessage("messages.not-present", player));
+            } else {
+                channel.sendMessage(getMessage("messages.not-present", player)).queue();
+            }
+        }
+
+        String message = channel == null ? getMessage("messages.info", player) : getMessage("messages.info-discord", player);
+        message = message.replace("%request%", arg)
+                .replace("%discordName%", info.getDiscordName())
+                .replace("%mcName%", info.getMcName())
+                .replace("%discordID%", String.valueOf(info.getDiscordID()));
+        if (channel == null) {
+            player.sendMessage(message);
+        } else {
+            channel.sendMessageEmbeds(DiscordUtils.buildInfoEmbed(info)).queue();
+        }
+    }
 }

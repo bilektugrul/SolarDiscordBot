@@ -3,6 +3,7 @@ package io.github.bilektugrul.solardiscordbot.commands.discord;
 import io.github.bilektugrul.solardiscordbot.SolarDiscordBot;
 import io.github.bilektugrul.solardiscordbot.customcmd.CmdManager;
 import io.github.bilektugrul.solardiscordbot.customcmd.Command;
+import io.github.bilektugrul.solardiscordbot.linking.DiscordLinkManager;
 import io.github.bilektugrul.solardiscordbot.util.DiscordUtils;
 import io.github.bilektugrul.solardiscordbot.util.Utils;
 import me.clip.placeholderapi.PlaceholderAPI;
@@ -22,10 +23,12 @@ public class DiscordCommands extends ListenerAdapter {
 
     private final SolarDiscordBot plugin;
     private final CmdManager cmdManager;
+    private final DiscordLinkManager discordLinkManager;
 
     public DiscordCommands(SolarDiscordBot plugin) {
         this.plugin = plugin;
         this.cmdManager = plugin.getCmdManager();
+        this.discordLinkManager = plugin.getDiscordLinkManager();
     }
 
     @Override
@@ -92,7 +95,9 @@ public class DiscordCommands extends ListenerAdapter {
             String player = event.getOption("player", OptionMapping::getAsString);
 
             event.deferReply().queue();
-
+            DiscordLinkManager.LinkInfo info = discordLinkManager.getInfo(player);
+            Utils.sendInfo(player, null, event.getChannel().asTextChannel(), info);
+            event.getHook().editOriginal("Info sent!").queue();
         } else {
             Command cmd = cmdManager.getCmd(name);
             if (cmd == null) return;

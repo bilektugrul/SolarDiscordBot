@@ -7,7 +7,7 @@ broadcast-prefix: '&8[&bAnnouncement&8]&r '
 stats-command:
   color: '#42bff5'
   title: 'Stats of **``%player_name%``**'
-  thumbnail: 'https://cravatar.eu/avatar/%player_name%/64.png'
+  thumbnail: 'https://mc-heads.net/avatar/%player_name%/64'
   description: ''
   footer: ''
   footer-icon: ''
@@ -22,6 +22,25 @@ stats-command:
     3:
       name: KDR
       value: '%someplaceholder%'
+
+info-command:
+  color: '#42bff5'
+  title: 'Link info of **``%player_name%``**'
+  thumbnail: 'https://mc-heads.net/avatar/%player_name%/64'
+  description: ''
+  footer: ''
+  footer-icon: ''
+
+  fields:
+    1:
+      name: Discord Name
+      value: '%discordName%'
+    2:
+      name: Discord ID
+      value: '%discordID%'
+    3:
+      name: Minecraft name
+      value: '%player_name%'
 
 discord-guild-id: 559339263452250123
 discord-link-channel-id: 1185985414704680970
@@ -69,10 +88,14 @@ messages:
   unlinked:
     - '&7Your discord account link has been removed. You can relink again.'
   info:
-    - '&7Your discord account: &b%account%'
-  info-other:
-    - '&7Their discord account: &b%account%'
-  info-player-other:
-    - '&7Their minecraft account: &b%account%'
+    - '&7Information about &b%request%:'
+    - ' &eDiscord name: &b%discordName%'
+    - ' &eDiscord ID: &b%discordID%'
+    - ' &eMinecraft name: &b%mcName%'
+  info-discord:
+    - 'Information about %request%:'
+    - ' Discord name: %discordName%'
+    - ' Discord ID: %discordID%'
+    - ' Minecraft name: %mcName%'
   not-present:
-    - '&cThat Discord ID has not linked their Minecraft account.'
+    - '&b%request% &chas not linked their Minecraft account.'

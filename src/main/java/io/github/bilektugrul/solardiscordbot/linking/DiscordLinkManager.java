@@ -97,43 +97,29 @@ public class DiscordLinkManager {
         player.sendMessage(Utils.getMessage("messages.unlinked", player));
     }
 
-    public void sendInfo(Player player, String infoPlayer) {
+    public LinkInfo getInfo(String infoUser) {
         User mcUser;
         boolean discordID = false;
 
-        if (NumberUtils.isLong(infoPlayer)) {
+        if (NumberUtils.isLong(infoUser)) {
             discordID = true;
-            mcUser = findOwnerOfDiscordID(Long.parseLong(infoPlayer));
-        } else if (!userManager.isLoaded(infoPlayer)) {
-            mcUser = userManager.loadUser(infoPlayer, false);
+            mcUser = findOwnerOfDiscordID(Long.parseLong(infoUser));
+        } else if (!userManager.isLoaded(infoUser)) {
+            mcUser = userManager.loadUser(infoUser, false);
         } else {
-            mcUser = userManager.getUser(infoPlayer);
+            mcUser = userManager.getUser(infoUser);
         }
 
         if (discordID && mcUser == null) {
-            player.sendMessage(Utils.getMessage("messages.not-present", player));
-            return;
+            return null;
         }
 
         if (mcUser.getDiscordID() == -1) {
-            if (infoPlayer.equals(player.getName())) {
-                player.sendMessage(Utils.getMessage("messages.not-linked", player));
-            } else {
-                player.sendMessage(Utils.getMessage("messages.not-linked-other", player));
-            }
-            return;
+            return null;
         }
 
-        String message;
-        if (discordID) {
-            message = Utils.getMessage("messages.info-player-other", player);
-        } else {
-            message = infoPlayer.equals(player.getName())
-                    ? Utils.getMessage("messages.info", player)
-                    : Utils.getMessage("messages.info-other", player);
-        }
-
-        player.sendMessage(message.replace("%account%", discordID ? mcUser.getName() : plugin.getBot().getUserById(mcUser.getDiscordID()).getName()));
+        Guild guild = plugin.getBot().getGuildById(Utils.getLong("discord-guild-id"));
+        return new LinkInfo(mcUser.getName(), mcUser.getDiscordID(), guild.getMemberById(mcUser.getDiscordID()).getUser().getName());
     }
 
     public User findOwnerOfDiscordID(long discordID) {
@@ -210,14 +196,16 @@ public class DiscordLinkManager {
         return codes.containsKey(player);
     }
 
-    public class LinkInfo {
+    public static class LinkInfo {
 
         private final String mcName;
+        private final String discordName;
         private final long discordID;
 
-        public LinkInfo(String mcName, long discordID) {
+        public LinkInfo(String mcName, long discordID, String discordName) {
             this.mcName = mcName;
             this.discordID = discordID;
+            this.discordName = discordName;
         }
 
         public String getMcName() {
@@ -226,6 +214,10 @@ public class DiscordLinkManager {
 
         public long getDiscordID() {
             return discordID;
+        }
+
+        public String getDiscordName() {
+            return discordName;
         }
 
     }

@@ -36,7 +36,8 @@ public class DiscordLinkCommand implements CommandExecutor {
             discordLinkManager.unlink(player);
         } else if (args[0].equalsIgnoreCase("info")) {
             if (args.length == 1) {
-                discordLinkManager.sendInfo(player, player.getName());
+                DiscordLinkManager.LinkInfo info = discordLinkManager.getInfo(player.getName());
+                Utils.sendInfo(player.getName(), player, null, info);
                 return true;
             }
 
@@ -45,7 +46,8 @@ public class DiscordLinkCommand implements CommandExecutor {
             }
 
             String otherName = args[1];
-            discordLinkManager.sendInfo(player, otherName);
+            DiscordLinkManager.LinkInfo info = discordLinkManager.getInfo(otherName);
+            Utils.sendInfo(args[1], player, null, info);
         }
 
         return true;
