@@ -40,6 +40,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 
 public final class SolarDiscordBot extends JavaPlugin {
 
@@ -165,9 +166,10 @@ public final class SolarDiscordBot extends JavaPlugin {
         }, 60);
 
         if (!Utils.getString("presence").isEmpty()) {
+            Activity.ActivityType type = Activity.ActivityType.valueOf(Utils.getString("presence-type").toUpperCase(Locale.ROOT));
+            Activity activity = Activity.of(type, PlaceholderAPI.setPlaceholders(null, Utils.getString("presence")));
             getServer().getScheduler().runTaskLater(this, () ->
-                            bot.getPresence().setActivity(Activity.playing(PlaceholderAPI.setPlaceholders(null, Utils.getString("presence")))),
-                    100);
+                    bot.getPresence().setPresence(activity, true), 100);
         }
     }
 

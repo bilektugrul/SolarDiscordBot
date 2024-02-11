@@ -98,10 +98,12 @@ public class Utils {
     public static void sendInfo(String arg, Player player, TextChannel channel, DiscordLinkManager.LinkInfo info) {
         if (info == null) {
             if (channel == null) {
-                player.sendMessage(getMessage("messages.not-present", player));
+                player.sendMessage(getMessage("messages.not-present", player).replace("%request%", arg));
             } else {
-                channel.sendMessage(getMessage("messages.not-present", player)).queue();
+                channel.sendMessage(getMessage("messages.not-present", player).replace("%request%", arg)).queue();
             }
+
+            return;
         }
 
         String message = channel == null ? getMessage("messages.info", player) : getMessage("messages.info-discord", player);

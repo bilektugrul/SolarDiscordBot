@@ -35,7 +35,7 @@ public class BukkitListener implements Listener {
 
         if (!Utils.getString("presence").isEmpty()) {
             Activity.ActivityType type = Activity.ActivityType.valueOf(Utils.getString("presence-type").toUpperCase(Locale.ROOT));
-            Activity activity = Activity.of(type, Utils.getString("presence"));
+            Activity activity = Activity.of(type, PlaceholderAPI.setPlaceholders(null, Utils.getString("presence")));
             plugin.getBot().getPresence().setPresence(activity, true);
         }
     }
@@ -53,7 +53,7 @@ public class BukkitListener implements Listener {
 
         if (!Utils.getString("presence").isEmpty()) {
             Activity.ActivityType type = Activity.ActivityType.valueOf(Utils.getString("presence-type").toUpperCase(Locale.ROOT));
-            Activity activity = Activity.of(type, Utils.getString("presence"));
+            Activity activity = Activity.of(type, PlaceholderAPI.setPlaceholders(null, Utils.getString("presence")));
             plugin.getBot().getPresence().setPresence(activity, true);
         }
     }

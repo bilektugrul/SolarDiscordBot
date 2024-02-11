@@ -80,7 +80,9 @@ public class DiscordLinkManager {
         player.sendMessage(Utils.getMessage("messages.linked", player).replace("%account%", member.getUser().getName()));
         channel.sendMessage(Utils.getMessage("messages.linked-discord", player)
                 .replace("%name%", player.getName())
-                .replace("%member%", member.getAsMention())).queue();
+                .replace("%member%", member.getAsMention())).queue(m -> {
+                    plugin.getServer().getScheduler().runTaskLater(plugin, () -> m.delete().queue(), 100);
+        });
     }
 
     public void unlink(Player player) {

@@ -15,6 +15,7 @@ import net.dv8tion.jda.api.entities.channel.unions.GuildChannelUnion;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.interactions.commands.OptionMapping;
+import net.dv8tion.jda.api.utils.messages.MessageEditData;
 
 import java.io.File;
 import java.io.IOException;
@@ -47,9 +48,7 @@ public class DiscordCommands extends ListenerAdapter {
             // This sends a "Bot is thinking..." message which is later edited once we finished
 
             event.deferReply().queue();
-
             plugin.getServer().broadcastMessage(Utils.colored(Utils.getString("broadcast-prefix") + Utils.colored(PlaceholderAPI.setPlaceholders(null, message))));
-
             event.getHook().editOriginal("Message sent!").queue();
 
         } else if (name.equals("dcbroadcast")) {
@@ -84,8 +83,7 @@ public class DiscordCommands extends ListenerAdapter {
             MessageEmbed embed = DiscordUtils.buildStatsEmbed(playerName);
             event.deferReply().queue();
 
-            event.getHook().editOriginal("Stats sent!").queue();
-            event.getHook().retrieveOriginal().queue(m -> m.replyEmbeds(embed).queue());
+            event.getHook().editOriginal(MessageEditData.fromEmbeds(embed)).queue();
         } else if (name.equals("linkinfo")) {
             if (!event.getMember().hasPermission(Permission.MODERATE_MEMBERS)) {
                 event.reply("You can not use this command.").setEphemeral(true).queue();
@@ -96,8 +94,7 @@ public class DiscordCommands extends ListenerAdapter {
 
             event.deferReply().queue();
             DiscordLinkManager.LinkInfo info = discordLinkManager.getInfo(player);
-            Utils.sendInfo(player, null, event.getChannel().asTextChannel(), info);
-            event.getHook().editOriginal("Info sent!").queue();
+            event.getHook().editOriginal(MessageEditData.fromEmbeds(DiscordUtils.buildInfoEmbed(info))).queue();
         } else {
             Command cmd = cmdManager.getCmd(name);
             if (cmd == null) return;
@@ -105,8 +102,7 @@ public class DiscordCommands extends ListenerAdapter {
             MessageEmbed embed = cmd.getEmbed();
             event.deferReply().queue();
 
-            event.getHook().editOriginal(cmd.getSentMessage()).queue();
-            event.getHook().retrieveOriginal().queue(m -> m.replyEmbeds(embed).queue());
+            event.getHook().editOriginal(MessageEditData.fromEmbeds(embed)).queue();
         }
 
     }

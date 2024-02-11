@@ -47,7 +47,7 @@ public class DiscordLinkCommand implements CommandExecutor {
 
             String otherName = args[1];
             DiscordLinkManager.LinkInfo info = discordLinkManager.getInfo(otherName);
-            Utils.sendInfo(args[1], player, null, info);
+            Utils.sendInfo(otherName, player, null, info);
         }
 
         return true;

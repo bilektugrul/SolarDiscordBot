@@ -64,6 +64,7 @@ messages:
     - '&b/discord unlink'
     - '&b/discord info'
   code-created:
+    - ''
     - '&7Your linking code: &b%code%'
     - ''
     - '&7Click on it for copying it easily.'

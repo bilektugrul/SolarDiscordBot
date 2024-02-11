@@ -27,7 +27,8 @@ public class LuckPermsListener {
     }
 
     private void nodeAddEvent(NodeAddEvent event) {
-        User target = (User) event.getTarget();
+        if (!(event.getTarget() instanceof User target)) return;
+
         Node node = event.getNode();
 
         this.plugin.getServer().getScheduler().runTask(this.plugin, () -> {
